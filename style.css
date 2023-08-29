@@ -14,6 +14,10 @@ body {
 	align-items: center;
 	justify-content: center;
 	height: 100%;
+
+	background-color: #F0FFF0;
+
+	font-family: 'Ubuntu', sans-serif;
 }
 
 .clock {
@@ -25,8 +29,8 @@ body {
 	display: flex;
 	justify-content: stretch;
 	padding: 0;
-	margin: 0 0 20px;
-	gap: 15px;
+	margin: 0 0 15px;
+	gap: 10px;
 
 	list-style: none;
 }
@@ -39,10 +43,16 @@ body {
 	width: 100%;
 	padding: 1em 0 1em;
 	border-width: 1px;
+	border-color: rgba(0, 0, 0, 0.3);
 
-	background-color: #fff;
+	background-color: white;
 	border-radius: 5px;
 	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+.clock__button:hover {
+	background-color: #FFFAF0;
 }
 
 .clock__content {
@@ -51,24 +61,26 @@ body {
 	justify-content: center;
 	align-items: center;
 	height: 300px;
+
+	border-radius: 6px;
+	box-shadow: 0px 0px 25px 5px rgba(0, 0, 0, 0.2);
+	background-color: white;
 }
 
 .clock__hours {
-	margin-bottom: 30px;
+	margin-bottom: 25px;
 
-	font-size: 36px;
+	font-size: 44px;
 	font-weight: 700;
 }
 
 .clock__day {
-	margin-bottom: 25px;
+	margin-bottom: 10px;
 
-	font-size: 30px;
-	font-weight: 600;
+	font-size: 26px;
+	font-weight: 500;
 }
 
 .clock__date {
-	margin-bottom: 15px;
-	
-	font-size: 24px;
+	font-size: 20px;
 }
