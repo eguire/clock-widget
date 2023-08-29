@@ -1,0 +1,74 @@
+html {
+	height: 100%;
+	box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: inherit;
+}
+
+body {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	height: 100%;
+}
+
+.clock {
+	max-width: 400px;
+	width: 100%;
+}
+
+.clock__list {
+	display: flex;
+	justify-content: stretch;
+	padding: 0;
+	margin: 0 0 20px;
+	gap: 15px;
+
+	list-style: none;
+}
+
+.clock__item {
+	width: 100%;
+}
+
+.clock__button {
+	width: 100%;
+	padding: 1em 0 1em;
+	border-width: 1px;
+
+	background-color: #fff;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.clock__content {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	height: 300px;
+}
+
+.clock__hours {
+	margin-bottom: 30px;
+
+	font-size: 36px;
+	font-weight: 700;
+}
+
+.clock__day {
+	margin-bottom: 25px;
+
+	font-size: 30px;
+	font-weight: 600;
+}
+
+.clock__date {
+	margin-bottom: 15px;
+	
+	font-size: 24px;
+}
