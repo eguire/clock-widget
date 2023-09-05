@@ -13,21 +13,42 @@
 
 <body>
 
-	<div class="clock">
+	<div class="widget">
 
-		<ul class="clock__list">
-			<li class="clock__item">
-				<button class="clock__button" type="button">Clock</button>
+		<ul class="widget__list">
+			<li class="widget__item">
+				<button class="widget__button" type="button">Clock</button>
 			</li>
-			<li class="clock__item">
-				<button class="clock__button" type="button">Stopwatch</button>
+			<li class="widget__item">
+				<button class="widget__button" type="button">Stopwatch</button>
 			</li>
-			<li class="clock__item">
-				<button class="clock__button" type="button">Timer</button>
+			<li class="widget__item">
+				<button class="widget__button" type="button">Timer</button>
 			</li>
 		</ul>
 
-		<div class="clock__content"></div>
+		<div class="widget__clock widget__content"></div>
+
+		<div class="widget__stopwatch widget__content">
+			<div class="widget__sw-board">
+				<span class="widget__sw-minutes">00</span> :
+				<span class="widget__sw-seconds">00</span>.
+				<span class="widget__sw-miliseconds">00</span>
+			</div>
+			<ul class="widget__sw-buttons">
+				<li class="widget__sw-item">
+					<button class="widget__sw-btn widget__sw-btn--reset" type="button">Reset</button>
+				</li>
+				<li class="widget__sw-item">
+					<button class="widget__sw-btn widget__sw-btn--start widget__sw-btn--active" type="button">Start</button>
+				</li>
+				<li class="widget__sw-item">
+					<button class="widget__sw-btn widget__sw-btn--lap" type="button">lap</button>
+				</li>
+			</ul>
+		</div>
+
+		<div class="widget__timer widget__content"></div>
 
 	</div>
 

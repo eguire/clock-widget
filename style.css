@@ -14,18 +14,20 @@ body {
 	align-items: center;
 	justify-content: center;
 	height: 100%;
+	margin: 0;
+	padding: 15px;
 
 	background-color: #F0FFF0;
 
 	font-family: 'Ubuntu', sans-serif;
 }
 
-.clock {
+.widget {
 	max-width: 400px;
 	width: 100%;
 }
 
-.clock__list {
+.widget__list {
 	display: flex;
 	justify-content: stretch;
 	padding: 0;
@@ -35,11 +37,11 @@ body {
 	list-style: none;
 }
 
-.clock__item {
+.widget__item {
 	width: 100%;
 }
 
-.clock__button {
+.widget__button {
 	width: 100%;
 	padding: 1em 0 1em;
 	border-width: 1px;
@@ -51,12 +53,12 @@ body {
 	transition: background-color 0.3s;
 }
 
-.clock__button:hover {
+.widget__button:hover {
 	background-color: #FFFAF0;
 }
 
-.clock__content {
-	display: flex;
+.widget__content {
+	display: none;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
@@ -67,20 +69,77 @@ body {
 	background-color: white;
 }
 
-.clock__hours {
+.widget-active {
+	display: flex;
+}
+
+.widget__hours {
 	margin-bottom: 25px;
 
 	font-size: 44px;
 	font-weight: 700;
 }
 
-.clock__day {
+.widget__day {
 	margin-bottom: 10px;
 
 	font-size: 26px;
 	font-weight: 500;
 }
 
-.clock__date {
+.widget__date {
 	font-size: 20px;
+}
+
+.widget__sw-board {
+	margin-bottom: 50px;
+
+	font-size: 36px;
+	font-weight: 700;
+}
+
+.widget__sw-buttons {
+	display: flex;
+	padding-left: 0;
+	margin: 0;
+
+	list-style: none;
+}
+
+.widget__sw-item:not(:last-child) {
+	margin-right: 15px;
+}
+
+.widget__sw-btn {
+	min-width: 60px;
+	padding: 3px 10px;
+	border-width: 1px;
+
+	border-radius: 3px;
+	border-color: rgba(0, 0, 0, 0.3);
+	opacity: 0.6;
+
+	font-size: 12px;
+	text-transform: uppercase;
+	cursor: pointer;
+}
+
+.widget__sw-btn--active {
+	opacity: 1;
+}
+
+.widget__sw-btn--start {
+	background-color: rgba(50, 205, 50, 0.5);
+}
+
+.widget__sw-btn--pause {
+	background-color: #FFFACD;
+}
+
+.widget__sw-btn--reset {
+	background-color: #FFDAB9;
+}
+
+.widget__sw-btn--lap {
+	background-color: #D8BFD8;
 }
