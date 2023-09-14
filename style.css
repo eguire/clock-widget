@@ -91,7 +91,7 @@ body {
 	font-size: 20px;
 }
 
-.widget__sw-board {
+.widget__sw-display {
 	margin-bottom: 50px;
 
 	font-size: 36px;
@@ -121,11 +121,11 @@ body {
 
 	font-size: 12px;
 	text-transform: uppercase;
-	cursor: pointer;
 }
 
 .widget__sw-btn--active {
 	opacity: 1;
+	cursor: pointer;
 }
 
 .widget__sw-btn--start {
