@@ -89,32 +89,35 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	function stopWatch() {
 		const display = document.querySelector('.widget__sw-display'),
-					btnsWrapper = document.querySelector('.widget__sw-buttons');
+					btnsWrapper = document.querySelector('.widget__sw-buttons'),
+					lapsHead = document.querySelector('.widget__sw-head'),
+					lapsList = document.querySelector('.widget__sw-laps');
 		let interval,
 				startTime,
 				elapsedTime,
-				time = {milliseconds: 0, tens: 0, seconds: 0, minutes: 0, hours: 0};
+				time = {milliseconds: 0, tens: 0, seconds: 0, minutes: 0, hours: 0},
+				lapsArray = [];
 
 		btnsWrapper.addEventListener('click', (e) => {
 			const target = e.target;
 
 			if (target.classList.contains('widget__sw-btn--start')) { // Start stopwatch
 				target.classList.replace('widget__sw-btn--start', 'widget__sw-btn--pause'); // Change start button
-				target.textContent = 'Pause';
+				target.textContent = 'Pause'; // Change start button
 
 				document.querySelector('.widget__sw-btn--lap').classList.add('widget__sw-btn--active'); // Change lap button
 				document.querySelector('.widget__sw-btn--reset').classList.remove('widget__sw-btn--active'); // Change reset btn
 				
 				startTime = startTime ? Date.now() - elapsedTime : Date.now(); // Determine start time
-				interval = setInterval(updateDisplay, 10);
+				interval = setInterval(updateDisplay, 10); // Start refreshing display
 			} else if (target.classList.contains('widget__sw-btn--pause')) { // Pause
 				target.classList.replace('widget__sw-btn--pause', 'widget__sw-btn--start'); // Change start button
-				target.textContent = 'Start';
+				target.textContent = 'Start'; // Change start button
 				
-				document.querySelector('.widget__sw-btn--lap').classList.remove('widget__sw-btn--active');
-				document.querySelector('.widget__sw-btn--reset').classList.add('widget__sw-btn--active');
+				document.querySelector('.widget__sw-btn--lap').classList.remove('widget__sw-btn--active'); // Change lap button
+				document.querySelector('.widget__sw-btn--reset').classList.add('widget__sw-btn--active'); // Change reset btn
 
-				clearInterval(interval)
+				clearInterval(interval);
 			} else if (target.classList.contains('widget__sw-btn--reset') && target.classList.contains('widget__sw-btn--active')) { // Reset
 				target.classList.remove('widget__sw-btn--active');
 
@@ -124,10 +127,48 @@ window.addEventListener('DOMContentLoaded', () => {
 
 				startTime = 0;
 				elapsedTime = 0;
+				lapsArray = [];
 
 				display.textContent = '00:00.00';
+
+				lapsHead.classList.remove('widget__sw-head--active'); // Hide laps head block
+				lapsList.style.visibility = 'hidden'; // Hide laps block
+				lapsList.innerHTML = ''; // Clear laps list
+			} else if (target.classList.contains('widget__sw-btn--lap') && target.classList.contains('widget__sw-btn--active')) { // Lap
+				lapsHead.classList.add('widget__sw-head--active'); // Show laps head block
+				lapsList.style.visibility = 'visible'; // Show laps block
+
+				const lap = document.createElement('li'); // Creating new lap item
+				lap.classList.add('widget__sw-lap');
+				lapsArray.push(elapsedTime);
+				lap.innerHTML = `<span>${getZero(lapsArray.length)}</span><span>${countLapTime().minutes}:${countLapTime().seconds}.${countLapTime().tens}</span><span>${getZero(time.minutes)}:${getZero(time.seconds)}.${getZero(time.tens)}</span>`;
+				lapsList.prepend(lap); // Push lap item
 			}
 		})
+
+		function countLapTime() {
+			if (lapsArray.length > 1) {
+				const lapTime = elapsedTime - lapsArray[lapsArray.length - 2],
+							milliseconds = lapTime % 1000,
+							tens = getZero(Math.floor(milliseconds / 10)),
+							seconds = getZero(Math.floor((lapTime / 1000) % 60)),
+							minutes = getZero(Math.floor((lapTime / 1000 / 60) % 60)),
+							hours = getZero(Math.floor(lapTime / 1000 / 60 / 60));
+				return {
+					tens: tens,
+					seconds: seconds,
+					minutes: minutes,
+					hours: hours
+				}
+			} else {
+				return {
+					tens: getZero(time.tens),
+					seconds: getZero(time.seconds),
+					minutes: getZero(time.minutes),
+					hours: getZero(time.hours)
+				}
+			}
+		}
 
 		function updateDisplay() {
 			elapsedTime = Date.now() - startTime;

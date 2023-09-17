@@ -63,6 +63,7 @@ body {
 	justify-content: center;
 	align-items: center;
 	height: 300px;
+	padding: 15px;
 
 	border-radius: 6px;
 	box-shadow: 0px 0px 25px 5px rgba(0, 0, 0, 0.2);
@@ -92,7 +93,7 @@ body {
 }
 
 .widget__sw-display {
-	margin-bottom: 50px;
+	margin: 25px 0 25px;
 
 	font-size: 36px;
 	font-weight: 700;
@@ -101,7 +102,7 @@ body {
 .widget__sw-buttons {
 	display: flex;
 	padding-left: 0;
-	margin: 0;
+	margin: 0 0 20px;
 
 	list-style: none;
 }
@@ -142,4 +143,74 @@ body {
 
 .widget__sw-btn--lap {
 	background-color: #D8BFD8;
+}
+
+.widget__sw-head {
+	display: flex;
+	justify-content: space-between;
+	max-width: 290px;
+	width: 100%;
+	margin-bottom: 15px;
+
+	visibility: hidden;
+	transform: scaleX(0);
+
+	transition: transform 0.3s ease-out;
+}
+
+.widget__sw-head--active {
+	visibility: visible;
+	transform: scaleX(1);
+}
+
+.widget__sw-head span {
+	min-width: 60px;
+
+	font-size: 14px;
+	text-transform: uppercase;
+	font-weight: 500;
+	text-align: center;
+}
+
+.widget__sw-laps {
+	position: relative;
+	right: -15px;
+	padding: 0;
+	margin: 0;
+	height: 110px;
+	width: 100%;
+
+	list-style: none;
+	overflow-y: scroll;
+	visibility: hidden;
+}
+
+.widget__sw-lap {
+	display: flex;
+	justify-content: space-between;
+	margin: 0 auto;
+	max-width: 265px;
+	width: 100%;
+
+	animation: new-lap 0.5s ease-out;
+}
+
+@keyframes new-lap {
+	0% {
+		opacity: 0;
+		transform: translateY(-100%);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.widget__sw-lap:not(:last-child) {
+	margin-bottom: 10px;
+}
+
+.widget__sw-lap span:nth-child(2) {
+	transform: translateX(25%);
 }
