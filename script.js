@@ -1,8 +1,8 @@
 window.addEventListener('DOMContentLoaded', () => {
 
 	const buttonsArr = document.querySelectorAll('.widget__button'),
-		widgets = document.querySelectorAll('.widget__content'),
-		clock = document.querySelector('.widget__clock');
+				widgets = document.querySelectorAll('.widget__content'),
+				clock = document.querySelector('.widget__clock');
 	let clockInterval = setInterval(showTime, 1000);
 
 	buttonsArr.forEach((btn, i) => {
@@ -35,13 +35,13 @@ window.addEventListener('DOMContentLoaded', () => {
 					seconds = getZero(Math.floor((elapsedTime / 1000) % 60)),
 					minutes = getZero(Math.floor((elapsedTime / 1000 / 60) % 60)),
 					hours = getZero(Math.floor(elapsedTime / 1000 / 60 / 60));
-				return {
-					elapsedTime: elapsedTime,
-					tens: tens,
-					seconds: seconds,
-					minutes: minutes,
-					hours: hours
-				}
+		return {
+			elapsedTime: elapsedTime,
+			tens: tens,
+			seconds: seconds,
+			minutes: minutes,
+			hours: hours
+		}
 	}
 
 	function showTime() {
@@ -122,13 +122,13 @@ window.addEventListener('DOMContentLoaded', () => {
 
 				document.querySelector('.widget__sw-btn--lap').classList.add('widget__sw-btn--active'); // Change lap button
 				document.querySelector('.widget__sw-btn--reset').classList.remove('widget__sw-btn--active'); // Change reset btn
-				
+
 				startTime = startTime ? Date.now() - totalTime.elapsedTime : Date.now(); // Determine start time
 				interval = setInterval(updateDisplay, 10); // Start refreshing display
 			} else if (target.classList.contains('widget__sw-btn--pause')) { // Pause
 				target.classList.replace('widget__sw-btn--pause', 'widget__sw-btn--start'); // Change start button
 				target.textContent = 'Start'; // Change start button
-				
+
 				document.querySelector('.widget__sw-btn--lap').classList.remove('widget__sw-btn--active'); // Change lap button
 				document.querySelector('.widget__sw-btn--reset').classList.add('widget__sw-btn--active'); // Change reset btn
 
@@ -155,18 +155,13 @@ window.addEventListener('DOMContentLoaded', () => {
 				const lap = document.createElement('li'); // Creating new lap item
 				lap.classList.add('widget__sw-lap');
 				lapsArray.push(totalTime.elapsedTime);
-				lap.innerHTML = `<span>${getZero(lapsArray.length)}</span><span>${countLapTime().minutes}:${countLapTime().seconds}.${countLapTime().tens}</span><span>${totalTime.minutes}:${totalTime.seconds}.${totalTime.tens}</span>`;
+				lap.innerHTML = `<span>${getZero(lapsArray.length)}</span><span>${lapTime().minutes}:${lapTime().seconds}.${lapTime().tens}</span><span>${totalTime.minutes}:${totalTime.seconds}.${totalTime.tens}</span>`;
 				lapsList.prepend(lap); // Push lap item
 			}
 		})
 
-		function countLapTime() {
-			if (lapsArray.length > 1) {
-				const lapTime = countTime(totalTime.elapsedTime, lapsArray[lapsArray.length - 2]);
-				return lapTime;
-			} else {
-				return totalTime;
-			}
+		const lapTime = () => {
+			return lapsArray.length > 1 ? countTime(totalTime.elapsedTime, lapsArray[lapsArray.length - 2]) : totalTime;
 		}
 
 		function updateDisplay() {
