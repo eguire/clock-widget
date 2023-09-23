@@ -28,6 +28,22 @@ window.addEventListener('DOMContentLoaded', () => {
 		}
 	}
 
+	function countTime(minuend, deductible) {
+		const elapsedTime = minuend - deductible,
+					milliseconds = elapsedTime % 1000,
+					tens = getZero(Math.floor(milliseconds / 10)),
+					seconds = getZero(Math.floor((elapsedTime / 1000) % 60)),
+					minutes = getZero(Math.floor((elapsedTime / 1000 / 60) % 60)),
+					hours = getZero(Math.floor(elapsedTime / 1000 / 60 / 60));
+				return {
+					elapsedTime: elapsedTime,
+					tens: tens,
+					seconds: seconds,
+					minutes: minutes,
+					hours: hours
+				}
+	}
+
 	function showTime() {
 		const date = new Date(),
 			month = getMonthName(date.getMonth()),
@@ -94,8 +110,7 @@ window.addEventListener('DOMContentLoaded', () => {
 					lapsList = document.querySelector('.widget__sw-laps');
 		let interval,
 				startTime,
-				elapsedTime,
-				time = {milliseconds: 0, tens: 0, seconds: 0, minutes: 0, hours: 0},
+				totalTime,
 				lapsArray = [];
 
 		btnsWrapper.addEventListener('click', (e) => {
@@ -108,7 +123,7 @@ window.addEventListener('DOMContentLoaded', () => {
 				document.querySelector('.widget__sw-btn--lap').classList.add('widget__sw-btn--active'); // Change lap button
 				document.querySelector('.widget__sw-btn--reset').classList.remove('widget__sw-btn--active'); // Change reset btn
 				
-				startTime = startTime ? Date.now() - elapsedTime : Date.now(); // Determine start time
+				startTime = startTime ? Date.now() - totalTime.elapsedTime : Date.now(); // Determine start time
 				interval = setInterval(updateDisplay, 10); // Start refreshing display
 			} else if (target.classList.contains('widget__sw-btn--pause')) { // Pause
 				target.classList.replace('widget__sw-btn--pause', 'widget__sw-btn--start'); // Change start button
@@ -121,12 +136,11 @@ window.addEventListener('DOMContentLoaded', () => {
 			} else if (target.classList.contains('widget__sw-btn--reset') && target.classList.contains('widget__sw-btn--active')) { // Reset
 				target.classList.remove('widget__sw-btn--active');
 
-				for (key in time) {
-					time[key] = 0;
+				for (key in totalTime) {
+					totalTime[key] = 0;
 				}
 
 				startTime = 0;
-				elapsedTime = 0;
 				lapsArray = [];
 
 				display.textContent = '00:00.00';
@@ -140,45 +154,25 @@ window.addEventListener('DOMContentLoaded', () => {
 
 				const lap = document.createElement('li'); // Creating new lap item
 				lap.classList.add('widget__sw-lap');
-				lapsArray.push(elapsedTime);
-				lap.innerHTML = `<span>${getZero(lapsArray.length)}</span><span>${countLapTime().minutes}:${countLapTime().seconds}.${countLapTime().tens}</span><span>${getZero(time.minutes)}:${getZero(time.seconds)}.${getZero(time.tens)}</span>`;
+				lapsArray.push(totalTime.elapsedTime);
+				lap.innerHTML = `<span>${getZero(lapsArray.length)}</span><span>${countLapTime().minutes}:${countLapTime().seconds}.${countLapTime().tens}</span><span>${totalTime.minutes}:${totalTime.seconds}.${totalTime.tens}</span>`;
 				lapsList.prepend(lap); // Push lap item
 			}
 		})
 
 		function countLapTime() {
 			if (lapsArray.length > 1) {
-				const lapTime = elapsedTime - lapsArray[lapsArray.length - 2],
-							milliseconds = lapTime % 1000,
-							tens = getZero(Math.floor(milliseconds / 10)),
-							seconds = getZero(Math.floor((lapTime / 1000) % 60)),
-							minutes = getZero(Math.floor((lapTime / 1000 / 60) % 60)),
-							hours = getZero(Math.floor(lapTime / 1000 / 60 / 60));
-				return {
-					tens: tens,
-					seconds: seconds,
-					minutes: minutes,
-					hours: hours
-				}
+				const lapTime = countTime(totalTime.elapsedTime, lapsArray[lapsArray.length - 2]);
+				return lapTime;
 			} else {
-				return {
-					tens: getZero(time.tens),
-					seconds: getZero(time.seconds),
-					minutes: getZero(time.minutes),
-					hours: getZero(time.hours)
-				}
+				return totalTime;
 			}
 		}
 
 		function updateDisplay() {
-			elapsedTime = Date.now() - startTime;
-			time.milliseconds = elapsedTime % 1000;
-			time.tens = Math.floor(time.milliseconds / 10);
-			time.seconds = Math.floor((elapsedTime / 1000) % 60);
-			time.minutes = Math.floor((elapsedTime / 1000 / 60) % 60);
-			time.hours = Math.floor(elapsedTime / 1000 / 60 / 60);
+			totalTime = countTime(Date.now(), startTime);
 
-			display.textContent = `${getZero(time.minutes)}:${getZero(time.seconds)}.${getZero(time.tens)}`;
+			display.textContent = `${totalTime.minutes}:${totalTime.seconds}.${totalTime.tens}`;
 		}
 	}
 
