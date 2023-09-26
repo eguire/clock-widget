@@ -191,26 +191,33 @@ body {
 	margin: 0 auto;
 	max-width: 265px;
 	width: 100%;
-
-	animation: new-lap 0.5s ease-out;
+	
+	animation: new-lap 0.3s ease-out;
 }
 
 @keyframes new-lap {
 	0% {
-		opacity: 0;
-		transform: translateY(-100%);
+		margin-top: -24px;
 	}
 
 	100% {
-		opacity: 1;
-		transform: translateY(0);
+		margin-top: 0;
 	}
 }
 
 .widget__sw-lap:not(:last-child) {
-	margin-bottom: 10px;
+	margin-bottom: 5px;
+	padding-bottom: 5px;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .widget__sw-lap span:nth-child(2) {
 	transform: translateX(25%);
+}
+
+@media only screen and (max-width: 768px) {
+	.widget__sw-laps {
+		position: static;
+		right: 0;
+	}
 }

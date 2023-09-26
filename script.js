@@ -154,7 +154,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 				const lap = document.createElement('li'); // Creating new lap item
 				lap.classList.add('widget__sw-lap');
-				lapsArray.push(totalTime.elapsedTime);
+				lapsArray.push(totalTime.elapsedTime); // Add lap time to array
 				lap.innerHTML = `<span>${getZero(lapsArray.length)}</span><span>${lapTime().minutes}:${lapTime().seconds}.${lapTime().tens}</span><span>${totalTime.minutes}:${totalTime.seconds}.${totalTime.tens}</span>`;
 				lapsList.prepend(lap); // Push lap item
 			}
