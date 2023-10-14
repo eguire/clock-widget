@@ -174,19 +174,107 @@ window.addEventListener('DOMContentLoaded', () => {
 	function timer() {
 		const timer = document.querySelector('.widget__timer'),
 					startBtn = timer.querySelector('.widget__timer-start'),
-					resetBtn = timer.querySelector('.widget__timer-reset');
+					resetBtn = timer.querySelector('.widget__timer-reset'),
+					fields = timer.querySelectorAll('.widget__timer-item'),
+					hours = timer.querySelector('#timer-hours'),
+					minutes = timer.querySelector('#timer-minutes'),
+					seconds = timer.querySelector('#timer-seconds'),
+					timerDisplay = timer.querySelector('.widget__timer-display');
+		let deadline,
+				totalTime,
+				interval;
 
-		startBtn.addEventListener('click', () => {
-			timer.classList.toggle('widget__timer--active');
+		startBtn.addEventListener('click', (e) => { // Start or pause timer
+			timer.classList.add('widget__timer--active');
+			startBtn.classList.toggle('widget__timer-start--pause');
+
+			if (e.target.classList.contains('widget__timer-start--pause')) {
+				deadline = deadline ? Date.now() + totalTime.elapsedTime : Date.now() + getTimeFromInputs();
+				updateTimer();
+				interval = setInterval(updateTimer, 1000);
+			} else {
+				clearInterval(interval);
+			}
 		})
 
-		resetBtn.addEventListener('click', () => {
+		resetBtn.addEventListener('click', () => { // Reset timer
 			timer.classList.remove('widget__timer--active');
+			startBtn.classList.remove('widget__timer-start--pause');
+
+			deadline = 0;
+			totalTime = 0;
+			clearInterval(interval);
 		})
+
+		fields[0].addEventListener('click', (el) => {
+			if (el.target.classList.contains('widget__timer-btn--minus') && hours.value < 1) {
+				hours.value = 23;
+				hours.setAttribute('value', `${hours.value}`);
+			} else if (el.target.classList.contains('widget__timer-btn--minus')) {
+				hours.stepDown();
+				hours.setAttribute('value', `${hours.value}`);
+			} else if (el.target.classList.contains('widget__timer-btn--plus') && hours.value > 22) {
+				hours.value = 0;
+				hours.setAttribute('value', `${hours.value}`);
+			} else if (el.target.classList.contains('widget__timer-btn--plus')) {
+				hours.stepUp();
+				hours.setAttribute('value', `${hours.value}`);
+			}
+		})
+
+		fields[1].addEventListener('click', (el) => {
+			if (el.target.classList.contains('widget__timer-btn--minus') && minutes.value < 1) {
+				minutes.value = 59;
+				minutes.setAttribute('value', `${minutes.value}`);
+			} else if (el.target.classList.contains('widget__timer-btn--minus')) {
+				minutes.stepDown();
+				minutes.setAttribute('value', `${minutes.value}`);
+			} else if (el.target.classList.contains('widget__timer-btn--plus') && minutes.value > 58) {
+				minutes.value = 0;
+				minutes.setAttribute('value', `${minutes.value}`);
+			} else if (el.target.classList.contains('widget__timer-btn--plus')) {
+				minutes.stepUp();
+				minutes.setAttribute('value', `${minutes.value}`);
+			}
+		})
+
+		fields[2].addEventListener('click', (el) => {
+			if (el.target.classList.contains('widget__timer-btn--minus') && seconds.value < 2) {
+				seconds.value = 59;
+				seconds.setAttribute('value', `${seconds.value}`);
+			} else if (el.target.classList.contains('widget__timer-btn--minus')) {
+				seconds.stepDown();
+				seconds.setAttribute('value', `${seconds.value}`);
+			} else if (el.target.classList.contains('widget__timer-btn--plus') && seconds.value > 58) {
+				seconds.value = 1;
+				seconds.setAttribute('value', `${seconds.value}`);
+			} else if (el.target.classList.contains('widget__timer-btn--plus')) {
+				seconds.stepUp();
+				seconds.setAttribute('value', `${seconds.value}`);
+			}
+		})
+
+		function getTimeFromInputs() {
+			const getHours = hours.value * 60 * 60 * 1000,
+						getMinutes = minutes.value * 60 * 1000,
+						getSeconds = seconds.value * 1000,
+						totalInputsTime = getHours + getMinutes + getSeconds;
+			return totalInputsTime;
+		}
+
+		function updateTimer() {
+			totalTime = countTime(deadline, Date.now());
+			if (totalTime.elapsedTime > 0) {
+				timerDisplay.textContent = `${totalTime.hours}:${totalTime.minutes}:${totalTime.seconds}`;
+			} else {
+				console.log('stop')
+				clearInterval(interval);
+			}
+		}
 	}
 
-	showTime();
-	buttonsArr[0].click();
+	// showTime();
+	buttonsArr[2].click();
 	stopWatch();
 	timer();
 

@@ -242,18 +242,6 @@ body {
 	visibility: hidden;
 }
 
-.widget__timer--active .widget__timer-start::after {
-	left: 15px;
-
-	width: 20px;
-	height: 20px;
-	border: 0;
-
-	background-image: url('pause.svg');
-	background-size: cover;
-	background-repeat: no-repeat;
-}
-
 .widget__timer--active .widget__timer-reset {
 	transform: translateX(0);
 	opacity: 1;
@@ -358,6 +346,18 @@ body {
 	border-color: transparent transparent transparent #007bff;
 
 	content: '';
+}
+
+.widget__timer-start--pause::after {
+	left: 15px;
+
+	width: 20px;
+	height: 20px;
+	border: 0;
+
+	background-image: url('pause.svg');
+	background-size: cover;
+	background-repeat: no-repeat;
 }
 
 .widget__timer-reset {
