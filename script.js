@@ -171,8 +171,23 @@ window.addEventListener('DOMContentLoaded', () => {
 		}
 	}
 
+	function timer() {
+		const timer = document.querySelector('.widget__timer'),
+					startBtn = timer.querySelector('.widget__timer-start'),
+					resetBtn = timer.querySelector('.widget__timer-reset');
+
+		startBtn.addEventListener('click', () => {
+			timer.classList.toggle('widget__timer--active');
+		})
+
+		resetBtn.addEventListener('click', () => {
+			timer.classList.remove('widget__timer--active');
+		})
+	}
+
 	showTime();
 	buttonsArr[0].click();
 	stopWatch();
+	timer();
 
 })
