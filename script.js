@@ -186,7 +186,6 @@ window.addEventListener('DOMContentLoaded', () => {
 				interval;
 
 		audio.setAttribute('src', 'alarm.mp3');
-		audio.setAttribute('autoplay', '');
 
 		startBtn.addEventListener('click', (e) => { // Start or pause timer
 			timer.classList.add('widget__timer--active');
@@ -275,6 +274,7 @@ window.addEventListener('DOMContentLoaded', () => {
 				timerDisplay.textContent = `${totalTime.hours}:${totalTime.minutes}:${totalTime.seconds}`;
 			} else {
 				timer.append(audio);
+				audio.play();
 
 				startBtn.classList.remove('widget__timer-start--pause');
 				startBtn.setAttribute('disabled', 'true');
