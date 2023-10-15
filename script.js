@@ -179,10 +179,14 @@ window.addEventListener('DOMContentLoaded', () => {
 					hours = timer.querySelector('#timer-hours'),
 					minutes = timer.querySelector('#timer-minutes'),
 					seconds = timer.querySelector('#timer-seconds'),
-					timerDisplay = timer.querySelector('.widget__timer-display');
+					timerDisplay = timer.querySelector('.widget__timer-display'),
+					audio = document.createElement('audio');
 		let deadline,
 				totalTime,
 				interval;
+
+		audio.setAttribute('src', 'alarm.mp3');
+		audio.setAttribute('autoplay', '');
 
 		startBtn.addEventListener('click', (e) => { // Start or pause timer
 			timer.classList.add('widget__timer--active');
@@ -200,6 +204,9 @@ window.addEventListener('DOMContentLoaded', () => {
 		resetBtn.addEventListener('click', () => { // Reset timer
 			timer.classList.remove('widget__timer--active');
 			startBtn.classList.remove('widget__timer-start--pause');
+
+			startBtn.removeAttribute('disabled');
+			audio.remove();
 
 			deadline = 0;
 			totalTime = 0;
@@ -246,7 +253,7 @@ window.addEventListener('DOMContentLoaded', () => {
 				seconds.stepDown();
 				seconds.setAttribute('value', `${seconds.value}`);
 			} else if (el.target.classList.contains('widget__timer-btn--plus') && seconds.value > 58) {
-				seconds.value = 1;
+				hours.value > 0 || minutes.value > 0 ? seconds.value = 0 : seconds.value = 1;
 				seconds.setAttribute('value', `${seconds.value}`);
 			} else if (el.target.classList.contains('widget__timer-btn--plus')) {
 				seconds.stepUp();
@@ -267,13 +274,17 @@ window.addEventListener('DOMContentLoaded', () => {
 			if (totalTime.elapsedTime > 0) {
 				timerDisplay.textContent = `${totalTime.hours}:${totalTime.minutes}:${totalTime.seconds}`;
 			} else {
-				console.log('stop')
+				timer.append(audio);
+
+				startBtn.classList.remove('widget__timer-start--pause');
+				startBtn.setAttribute('disabled', 'true');
+
 				clearInterval(interval);
 			}
 		}
 	}
 
-	// showTime();
+	showTime();
 	buttonsArr[2].click();
 	stopWatch();
 	timer();
