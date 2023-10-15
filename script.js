@@ -186,6 +186,7 @@ window.addEventListener('DOMContentLoaded', () => {
 				interval;
 
 		audio.setAttribute('src', 'alarm.mp3');
+		audio.loop = true;
 
 		startBtn.addEventListener('click', (e) => { // Start or pause timer
 			timer.classList.add('widget__timer--active');
