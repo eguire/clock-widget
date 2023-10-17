@@ -265,12 +265,14 @@ window.addEventListener('DOMContentLoaded', () => {
 			const getHours = hours.value * 60 * 60 * 1000,
 						getMinutes = minutes.value * 60 * 1000,
 						getSeconds = seconds.value * 1000,
-						totalInputsTime = getHours + getMinutes + getSeconds;
+						totalInputsTime = getHours + getMinutes + getSeconds + 30;
 			return totalInputsTime;
 		}
 
 		function updateTimer() {
 			totalTime = countTime(deadline, Date.now());
+			console.log(deadline);
+			console.log(totalTime);
 			if (totalTime.elapsedTime > 0) {
 				timerDisplay.textContent = `${totalTime.hours}:${totalTime.minutes}:${totalTime.seconds}`;
 			} else {
