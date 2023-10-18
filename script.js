@@ -6,13 +6,11 @@ window.addEventListener('DOMContentLoaded', () => {
 	let clockInterval = setInterval(showTime, 1000);
 
 	buttonsArr.forEach((btn, i) => {
-		btn.addEventListener('click', (e) => {
-			if (btn == e.target) {
-				removeActiveClass();
-				widgets[i].classList.add('widget-active');
-			}
-		})
-	})
+		btn.addEventListener('click', () => {
+			removeActiveClass();
+			widgets[i].classList.add('widget-active');
+		});
+	});
 
 	function removeActiveClass() {
 		widgets.forEach(block => {
@@ -30,11 +28,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	function countTime(minuend, deductible) {
 		const elapsedTime = minuend - deductible,
-					milliseconds = elapsedTime % 1000,
-					tens = getZero(Math.floor(milliseconds / 10)),
-					seconds = getZero(Math.floor((elapsedTime / 1000) % 60)),
-					minutes = getZero(Math.floor((elapsedTime / 1000 / 60) % 60)),
-					hours = getZero(Math.floor(elapsedTime / 1000 / 60 / 60));
+			milliseconds = elapsedTime % 1000,
+			tens = getZero(Math.floor(milliseconds / 10)),
+			seconds = getZero(Math.floor((elapsedTime / 1000) % 60)),
+			minutes = getZero(Math.floor((elapsedTime / 1000 / 60) % 60)),
+			hours = getZero(Math.floor(elapsedTime / 1000 / 60 / 60));
 		return {
 			elapsedTime: elapsedTime,
 			tens: tens,
@@ -46,11 +44,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
 	function showTime() {
 		const date = new Date(),
-			month = getMonthName(date.getMonth()),
-			dayName = getDayName(date.getDay()),
-			day = date.getDate(),
-			hours = getZero(date.getHours()),
-			minutes = getZero(date.getMinutes());
+					month = getMonthName(date.getMonth()),
+					dayName = getDayName(date.getDay()),
+					day = date.getDate(),
+					hours = getZero(date.getHours()),
+					minutes = getZero(date.getMinutes());
 
 		clock.innerHTML = `<div class="widget__hours">${hours} : ${minutes}</div><div class="widget__day">${dayName}</div><div class="widget__date">${day} ${month}</div>`;
 
@@ -176,14 +174,15 @@ window.addEventListener('DOMContentLoaded', () => {
 					startBtn = timer.querySelector('.widget__timer-start'),
 					resetBtn = timer.querySelector('.widget__timer-reset'),
 					fields = timer.querySelectorAll('.widget__timer-item'),
+					inputs = timer.querySelectorAll('.widget__timer-input'),
 					hours = timer.querySelector('#timer-hours'),
 					minutes = timer.querySelector('#timer-minutes'),
 					seconds = timer.querySelector('#timer-seconds'),
 					timerDisplay = timer.querySelector('.widget__timer-display'),
 					audio = document.createElement('audio');
 		let deadline,
-				totalTime,
-				interval;
+								totalTime,
+								interval;
 
 		audio.setAttribute('src', 'alarm.mp3');
 		audio.loop = true;
@@ -211,61 +210,85 @@ window.addEventListener('DOMContentLoaded', () => {
 			deadline = 0;
 			totalTime = 0;
 			clearInterval(interval);
-		})
+		});
 
-		fields[0].addEventListener('click', (el) => {
-			if (el.target.classList.contains('widget__timer-btn--minus') && hours.value < 1) {
-				hours.value = 23;
-				hours.setAttribute('value', `${hours.value}`);
-			} else if (el.target.classList.contains('widget__timer-btn--minus')) {
-				hours.stepDown();
-				hours.setAttribute('value', `${hours.value}`);
-			} else if (el.target.classList.contains('widget__timer-btn--plus') && hours.value > 22) {
-				hours.value = 0;
-				hours.setAttribute('value', `${hours.value}`);
-			} else if (el.target.classList.contains('widget__timer-btn--plus')) {
-				hours.stepUp();
-				hours.setAttribute('value', `${hours.value}`);
-			}
-		})
+		fields.forEach((field, i) => {
+			field.addEventListener('click', (e) => {
+				const target = e.target;
 
-		fields[1].addEventListener('click', (el) => {
-			if (el.target.classList.contains('widget__timer-btn--minus') && minutes.value < 1) {
-				minutes.value = 59;
-				minutes.setAttribute('value', `${minutes.value}`);
-			} else if (el.target.classList.contains('widget__timer-btn--minus')) {
-				minutes.stepDown();
-				minutes.setAttribute('value', `${minutes.value}`);
-			} else if (el.target.classList.contains('widget__timer-btn--plus') && minutes.value > 58) {
-				minutes.value = 0;
-				minutes.setAttribute('value', `${minutes.value}`);
-			} else if (el.target.classList.contains('widget__timer-btn--plus')) {
-				minutes.stepUp();
-				minutes.setAttribute('value', `${minutes.value}`);
-			}
-		})
+				if (target.classList.contains('widget__timer-btn--minus')) {
+					if (inputs[i].value == inputs[i].getAttribute('min')) {
+						inputs[i].value = inputs[i].getAttribute('max');
+						inputs[i].setAttribute('value', `${inputs[i].value}`);
+					} else {
+						inputs[i].stepDown();
+						inputs[i].setAttribute('value', `${inputs[i].value}`);
+					}
+				} else if (target.classList.contains('widget__timer-btn--plus')) {
+					if (inputs[i].value == inputs[i].getAttribute('max')) {
+						inputs[i].value = inputs[i].getAttribute('min');
+						inputs[i].setAttribute('value', `${inputs[i].value}`);
+					} else {
+						inputs[i].stepUp();
+						inputs[i].setAttribute('value', `${inputs[i].value}`);
+					}
+				}
+			});
+		});
 
-		fields[2].addEventListener('click', (el) => {
-			if (el.target.classList.contains('widget__timer-btn--minus') && seconds.value < 2) {
-				seconds.value = 59;
-				seconds.setAttribute('value', `${seconds.value}`);
-			} else if (el.target.classList.contains('widget__timer-btn--minus')) {
-				seconds.stepDown();
-				seconds.setAttribute('value', `${seconds.value}`);
-			} else if (el.target.classList.contains('widget__timer-btn--plus') && seconds.value > 58) {
-				hours.value > 0 || minutes.value > 0 ? seconds.value = 0 : seconds.value = 1;
-				seconds.setAttribute('value', `${seconds.value}`);
-			} else if (el.target.classList.contains('widget__timer-btn--plus')) {
-				seconds.stepUp();
-				seconds.setAttribute('value', `${seconds.value}`);
-			}
-		})
+		// fields[0].addEventListener('click', (el) => {
+		// 	if (el.target.classList.contains('widget__timer-btn--minus') && hours.value < 1) {
+		// 		hours.value = 23;
+		// 		hours.setAttribute('value', `${hours.value}`);
+		// 	} else if (el.target.classList.contains('widget__timer-btn--minus')) {
+		// 		hours.stepDown();
+		// 		hours.setAttribute('value', `${hours.value}`);
+		// 	} else if (el.target.classList.contains('widget__timer-btn--plus') && hours.value > 22) {
+		// 		hours.value = 0;
+		// 		hours.setAttribute('value', `${hours.value}`);
+		// 	} else if (el.target.classList.contains('widget__timer-btn--plus')) {
+		// 		hours.stepUp();
+		// 		hours.setAttribute('value', `${hours.value}`);
+		// 	}
+		// })
+
+		// fields[1].addEventListener('click', (el) => {
+		// 	if (el.target.classList.contains('widget__timer-btn--minus') && minutes.value < 1) {
+		// 		minutes.value = 59;
+		// 		minutes.setAttribute('value', `${minutes.value}`);
+		// 	} else if (el.target.classList.contains('widget__timer-btn--minus')) {
+		// 		minutes.stepDown();
+		// 		minutes.setAttribute('value', `${minutes.value}`);
+		// 	} else if (el.target.classList.contains('widget__timer-btn--plus') && minutes.value > 58) {
+		// 		minutes.value = 0;
+		// 		minutes.setAttribute('value', `${minutes.value}`);
+		// 	} else if (el.target.classList.contains('widget__timer-btn--plus')) {
+		// 		minutes.stepUp();
+		// 		minutes.setAttribute('value', `${minutes.value}`);
+		// 	}
+		// })
+
+		// fields[2].addEventListener('click', (el) => {
+		// 	if (el.target.classList.contains('widget__timer-btn--minus') && seconds.value < 2) {
+		// 		seconds.value = 59;
+		// 		seconds.setAttribute('value', `${seconds.value}`);
+		// 	} else if (el.target.classList.contains('widget__timer-btn--minus')) {
+		// 		seconds.stepDown();
+		// 		seconds.setAttribute('value', `${seconds.value}`);
+		// 	} else if (el.target.classList.contains('widget__timer-btn--plus') && seconds.value > 58) {
+		// 		hours.value > 0 || minutes.value > 0 ? seconds.value = 0 : seconds.value = 1;
+		// 		seconds.setAttribute('value', `${seconds.value}`);
+		// 	} else if (el.target.classList.contains('widget__timer-btn--plus')) {
+		// 		seconds.stepUp();
+		// 		seconds.setAttribute('value', `${seconds.value}`);
+		// 	}
+		// })
 
 		function getTimeFromInputs() {
 			const getHours = hours.value * 60 * 60 * 1000,
-						getMinutes = minutes.value * 60 * 1000,
-						getSeconds = seconds.value * 1000,
-						totalInputsTime = getHours + getMinutes + getSeconds + 30;
+								getMinutes = minutes.value * 60 * 1000,
+								getSeconds = seconds.value * 1000,
+								totalInputsTime = getHours + getMinutes + getSeconds + 30;
 			return totalInputsTime;
 		}
 
@@ -292,4 +315,4 @@ window.addEventListener('DOMContentLoaded', () => {
 	stopWatch();
 	timer();
 
-})
+});
