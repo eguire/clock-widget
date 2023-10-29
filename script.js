@@ -251,6 +251,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			if (totalTime.elapsedTime > 0) {
 				timerDisplay.textContent = `${totalTime.hours}:${totalTime.minutes}:${totalTime.seconds}`;
 			} else {
+				buttonsArr[2].click();
 				timer.append(audio);
 				audio.play();
 
