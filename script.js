@@ -245,7 +245,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		}
 
 		async function updateTimer() {
-			await totalTime = countTime(deadline, Date.now());
+			totalTime = await countTime(deadline, Date.now());
 
 			if (totalTime.elapsedTime > 0) {
 				timerDisplay.textContent = `${totalTime.hours}:${totalTime.minutes}:${totalTime.seconds}`;
