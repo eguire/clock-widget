@@ -244,7 +244,7 @@ window.addEventListener('DOMContentLoaded', () => {
 			return totalInputsTime;
 		}
 
-		function async updateTimer() {
+		async function updateTimer() {
 			await totalTime = countTime(deadline, Date.now());
 
 			if (totalTime.elapsedTime > 0) {
