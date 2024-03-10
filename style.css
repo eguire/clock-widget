@@ -270,7 +270,33 @@ body {
 }
 
 .widget__timer-item {
+	position: relative;
+
 	display: flex;
+}
+
+.widget__timer-item::before {
+	position: absolute;
+	left: 50%;
+	top: -25px;
+
+	transform: translateX(-50%);
+
+	font-size: 14px;
+	font-weight: 500;
+	text-transform: uppercase;
+}
+
+.widget__timer-item:nth-child(1)::before {
+	content: 'hours';
+}
+
+.widget__timer-item:nth-child(2)::before {
+	content: 'minutes';
+}
+
+.widget__timer-item:nth-child(3)::before {
+	content: 'seconds';
 }
 
 .widget__timer-input {
