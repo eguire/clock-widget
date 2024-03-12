@@ -30,7 +30,7 @@ window.addEventListener('DOMContentLoaded', () => {
 		const elapsedTime = minuend - deductible,
 			milliseconds = elapsedTime % 1000,
 			tens = getZero(Math.floor(milliseconds / 10)),
-			seconds = getZero(Math.floor((elapsedTime / 1000) % 60)),
+			seconds = getZero(Math.round((elapsedTime / 1000) % 60)),
 			minutes = getZero(Math.floor((elapsedTime / 1000 / 60) % 60)),
 			hours = getZero(Math.floor(elapsedTime / 1000 / 60 / 60));
 		return {
@@ -240,17 +240,17 @@ window.addEventListener('DOMContentLoaded', () => {
 			const getHours = hours.value * 60 * 60 * 1000,
 								getMinutes = minutes.value * 60 * 1000,
 								getSeconds = seconds.value * 1000,
-								totalInputsTime = getHours + getMinutes + getSeconds + 30;
+								totalInputsTime = getHours + getMinutes + getSeconds;
 			return totalInputsTime;
 		}
 
 		function updateTimer() {
 			totalTime = countTime(deadline, Date.now());
-			console.log(totalTime);
 
 			if (totalTime.elapsedTime > 0) {
 				timerDisplay.textContent = `${totalTime.hours}:${totalTime.minutes}:${totalTime.seconds}`;
 			} else {
+				timerDisplay.textContent = '00:00:00';
 				buttonsArr[2].click();
 				timer.append(audio);
 				audio.play();
